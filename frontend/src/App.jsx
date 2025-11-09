@@ -411,8 +411,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
 /**
  * ログイン画面コンポーネント
  */
-mv ~/Desktop/e-flix-app/e-flix-frontend ./frontend
-mv ~/Desktop/e-flix-app/e-flix-backend ./backendconst LoginScreen = ({ handleLogin, error }) => (
+const LoginScreen = ({ handleLogin, error }) => (
     <div className="min-h-screen flex items-center justify-center bg-black">
       <div className="bg-gray-900 p-8 md:p-12 rounded-lg shadow-2xl max-w-sm w-full text-center">
         <h1 className="text-red-600 text-4xl font-bold mb-6">E-FLIX</h1>
