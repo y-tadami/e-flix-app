@@ -446,7 +446,7 @@ const LoginScreen = ({ handleLogin, error }) => (
  */
 const IntroScreen = ({ onEnd }) => {
   useEffect(() => {
-    const audio = new Audio('/intro-dune.mp3');
+    const audio = new Audio('/E-FLIXイントロだだーん.mp4');
     audio.play().catch(() => {});
     const timer = setTimeout(onEnd, 2000);
     return () => clearTimeout(timer);
