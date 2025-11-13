@@ -5,13 +5,6 @@ E-FLIXは、社内向けの講義動画プラットフォームです。
 
 ---
 
-## ディレクトリ構成
-
-
-e-flix-app/
-├ frontend/ # フロントエンド（React + Vite + Tailwind CSS）
-└ backend/ # バックエンド（Flask API）
-
 ## 各ディレクトリの説明
 ### frontend/
 * React（Vite）+ Tailwind CSSで構築
