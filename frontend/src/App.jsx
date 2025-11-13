@@ -556,9 +556,9 @@ export default function App() {
       const email = result.user.email;
       if (email && email.endsWith(ALLOWED_DOMAIN)) {
         setUser(result.user);
-        // サウンド再生
-        const audio = new Audio('/E-FLIXイントロだだーん.mp4');
-        audio.play().catch(() => {});
+        // // サウンド再生
+        // const audio = new Audio('/E-FLIXイントロだだーん.mp4');
+        // audio.play().catch(() => {});
       } else {
         await signOut(auth);
         setAuthError(`このメールアドレス (${email}) は ${ALLOWED_DOMAIN} ドメインではありません。`);
@@ -764,8 +764,8 @@ export default function App() {
         />
       )}
 
-      {/* イントロ画面 */}
-      {showIntro && <IntroScreen onEnd={() => setShowIntro(false)} />}
+      {/* イントロ画面
+      {showIntro && <IntroScreen onEnd={() => setShowIntro(false)} />} */}
     </div>
   );
 }
