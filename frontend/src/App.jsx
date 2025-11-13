@@ -557,7 +557,7 @@ export default function App() {
       if (email && email.endsWith(ALLOWED_DOMAIN)) {
         setUser(result.user);
         // サウンド再生
-        const audio = new Audio('/intro-dune.mp3');
+        const audio = new Audio('/E-FLIXイントロだだーん.mp4');
         audio.play().catch(() => {});
       } else {
         await signOut(auth);
