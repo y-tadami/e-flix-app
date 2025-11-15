@@ -985,3 +985,14 @@ const downloadLogsAsCSV = async () => {
 
 // 閲覧ログダウンロードボタン（テスト用）
 // <button onClick={downloadLogsAsCSV}>閲覧ログをダウンロード</button>
+
+// Firestoreインスタンス: db
+
+const fetchLogs = async () => {
+  const snap = await getDocs(collection(db, "logs"));
+  const logs = [];
+  snap.forEach(doc => {
+    logs.push(doc.data());
+  });
+  return logs;
+};
