@@ -769,6 +769,11 @@ export default function App() {
 
       {/* イントロ画面
       {showIntro && <IntroScreen onEnd={() => setShowIntro(false)} />} */}
+
+      {/* 閲覧ログダウンロードボタン（テスト用） */}
+      <button onClick={downloadLogsAsCSV} className="fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50">
+        閲覧ログをダウンロード
+      </button>
     </div>
   );
 }
@@ -973,7 +978,6 @@ const downloadLogsAsCSV = async () => {
       d.videoTitle
     ]);
   });
-  // CSV生成
   const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
