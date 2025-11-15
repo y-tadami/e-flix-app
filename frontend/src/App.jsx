@@ -1011,7 +1011,7 @@ const fetchLogs = async () => {
 // 管理者メールアドレスのリスト
 const ADMIN_EMAILS = [
   "admin1@example.com",
-  "admin2@example.com",
+  "t.ibi@estyle-inc.jp",
   "y.tadami@estyle-inc.jp"
 ];
 
