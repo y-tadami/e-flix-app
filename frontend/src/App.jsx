@@ -970,9 +970,10 @@ const addViewLog = async (user, video) => {
   await addDoc(collection(db, "logs"), {
     viewedAt: new Date(),
     email: user.email,
-    videoTitle: video.title,
-    videoSummary: video.summary,
+    videoTitle: video.title || "",
+    videoSummary: video.summary || "", // ←ここ
     videoId: video.id || video.driveLink || "",
+    uid: user.uid || "",
   });
 };
 
@@ -995,9 +996,15 @@ const downloadLogsAsCSV = async () => {
   const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
   const blob = new Blob([csv], { type: "text/csv" });
   const url = URL.createObjectURL(blob);
+
+  // 日時付きファイル名
+  const now = new Date();
+  const pad = n => n.toString().padStart(2, '0');
+  const fileName = `view_logs_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.csv`;
+
   const a = document.createElement("a");
   a.href = url;
-  a.download = "view_logs.csv";
+  a.download = fileName;
   a.click();
   URL.revokeObjectURL(url);
 };
