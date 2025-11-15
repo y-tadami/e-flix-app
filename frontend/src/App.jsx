@@ -402,6 +402,15 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                 >
                   視聴履歴
                 </button>
+                {/* 管理者向けメニュー (例: 閲覧ログダウンロード) */}
+                {isAdmin(user) && (
+                  <button
+                    onClick={downloadLogsAsCSV}
+                    className="w-full px-4 py-2 text-sm text-white bg-red-600 hover:bg-red-700 rounded transition"
+                  >
+                    閲覧ログをダウンロード
+                  </button>
+                )}
               </div>
           )}
         </div>
@@ -988,9 +997,6 @@ const downloadLogsAsCSV = async () => {
   URL.revokeObjectURL(url);
 };
 
-// 閲覧ログダウンロードボタン（テスト用）
-// <button onClick={downloadLogsAsCSV}>閲覧ログをダウンロード</button>
-
 // Firestoreインスタンス: db
 
 const fetchLogs = async () => {
@@ -1001,3 +1007,13 @@ const fetchLogs = async () => {
   });
   return logs;
 };
+
+// 管理者メールアドレスのリスト
+const ADMIN_EMAILS = [
+  "admin1@example.com",
+  "admin2@example.com",
+  "y.tadami@estyle-inc.jp"
+];
+
+// 管理者判定関数
+const isAdmin = user => ADMIN_EMAILS.includes(user?.email);
