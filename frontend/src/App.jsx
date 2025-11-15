@@ -401,7 +401,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                 >
                   視聴履歴
                 </button>
-            </div>
+              </div>
           )}
         </div>
       </div>
@@ -945,3 +945,43 @@ const VideoModalList = ({ title, videos, onClose, onVideoClick, user, setHistory
     </div>
   );
 };
+
+// ログ追加関数
+const addViewLog = async (user, video) => {
+  if (!user || !video) return;
+  await addDoc(collection(db, "logs"), {
+    uid: user.uid,
+    email: user.email,
+    videoId: video.id || video.driveLink,
+    videoTitle: video.title,
+    viewedAt: new Date()
+  });
+};
+
+// CSVダウンロード関数
+const downloadLogsAsCSV = async () => {
+  const snap = await getDocs(collection(db, "logs"));
+  const rows = [["日時", "ユーザーUID", "メール", "動画ID", "動画タイトル"]];
+  snap.forEach(doc => {
+    const d = doc.data();
+    rows.push([
+      new Date(d.viewedAt.seconds * 1000).toLocaleString(),
+      d.uid,
+      d.email,
+      d.videoId,
+      d.videoTitle
+    ]);
+  });
+  // CSV生成
+  const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "view_logs.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+// 閲覧ログダウンロードボタン（テスト用）
+// <button onClick={downloadLogsAsCSV}>閲覧ログをダウンロード</button>
