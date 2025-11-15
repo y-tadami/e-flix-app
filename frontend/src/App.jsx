@@ -89,6 +89,7 @@ const VideoModal = ({ video, onClose, user }) => {
   const handlePlay = async () => {
     if (user) {
       await addToHistory(video, user);
+      await addViewLog(user, video);
     }
     setIsPlaying(true);
   };
