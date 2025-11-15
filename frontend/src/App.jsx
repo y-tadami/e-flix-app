@@ -961,9 +961,6 @@ const VideoModalList = ({ title, videos, onClose, onVideoClick, user, setHistory
   );
 };
 
-// Firestoreに閲覧ログを追加する関数
-import { collection, addDoc } from "firebase/firestore";
-
 // ログ追加関数
 const addViewLog = async (user, video) => {
   if (!user || !video) return;
