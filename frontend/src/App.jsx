@@ -961,30 +961,35 @@ const VideoModalList = ({ title, videos, onClose, onVideoClick, user, setHistory
   );
 };
 
+// Firestoreに閲覧ログを追加する関数
+import { collection, addDoc } from "firebase/firestore";
+
 // ログ追加関数
 const addViewLog = async (user, video) => {
   if (!user || !video) return;
   await addDoc(collection(db, "logs"), {
-    uid: user.uid,
+    viewedAt: new Date(),
     email: user.email,
-    videoId: video.id || video.driveLink,
     videoTitle: video.title,
-    viewedAt: new Date()
+    videoSummary: video.summary,
+    videoId: video.id || video.driveLink || "",
   });
 };
 
 // CSVダウンロード関数
 const downloadLogsAsCSV = async () => {
   const snap = await getDocs(collection(db, "logs"));
-  const rows = [["日時", "ユーザーUID", "メール", "動画ID", "動画タイトル"]];
+  const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画ID"]];
   snap.forEach(doc => {
     const d = doc.data();
     rows.push([
-      new Date(d.viewedAt.seconds * 1000).toLocaleString(),
-      d.uid,
-      d.email,
-      d.videoId,
-      d.videoTitle
+      d.viewedAt?.seconds
+        ? new Date(d.viewedAt.seconds * 1000).toLocaleString()
+        : (d.viewedAt ? new Date(d.viewedAt).toLocaleString() : ""),
+      d.email || "",
+      d.videoTitle || "",
+      d.videoSummary || "",
+      d.videoId || ""
     ]);
   });
   const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
