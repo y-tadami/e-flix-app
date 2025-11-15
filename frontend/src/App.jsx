@@ -977,7 +977,7 @@ const addViewLog = async (user, video) => {
 // CSVダウンロード関数
 const downloadLogsAsCSV = async () => {
   const snap = await getDocs(collection(db, "logs"));
-  const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画ID"]];
+  const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画URL"]];
   snap.forEach(doc => {
     const d = doc.data();
     rows.push([
