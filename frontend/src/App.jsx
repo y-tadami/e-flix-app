@@ -295,6 +295,14 @@ const VideoCard = ({ video, onClick, user }) => {
                   <p className="text-white mt-1">{video.category}</p>
                 </div>
               )}
+
+              {/* 追加: 視聴期限表示 */}
+              {video.expireDate && (
+                <div>
+                  <h3 className="text-gray-400 text-sm">視聴期限</h3>
+                  <p className="text-white mt-1">{video.expireDate}</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -937,9 +945,10 @@ const VideoModalList = ({ title, videos, onClose, onVideoClick, user, setHistory
                   <div className="p-3 bg-gray-800 rounded-b-md">
                     <h3 className="text-white font-semibold text-sm truncate">{video.title}</h3>
                     <p className="text-gray-400 text-xs mt-1 truncate">{video.summary}</p>
-                    {video.viewedAt && (
+                    {/* 追加: 視聴期限表示 */}
+                    {video.expireDate && (
                       <p className="text-gray-400 text-xs mt-1">
-                        視聴日時: {new Date(video.viewedAt.seconds * 1000).toLocaleString()}
+                        視聴期限: {video.expireDate}
                       </p>
                     )}
                   </div>
