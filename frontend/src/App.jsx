@@ -160,6 +160,12 @@ const VideoModal = ({ video, onClose, user }) => {
               <p className="text-white whitespace-pre-wrap">{video.description}</p>
             </div>
           )}
+          {/* 追加: 視聴期限表示 */}
+          {video.expireDate && video.expireDate !== "なし" && (
+            <p className="text-gray-400 text-xs mt-1">
+              視聴期限: {formatExpireDate(video.expireDate)}
+            </p>
+          )}
         </div>
       </div>
     </div>
@@ -297,7 +303,7 @@ const VideoCard = ({ video, onClick, user }) => {
               )}
 
               {/* 追加: 視聴期限表示 */}
-              {video.expireDate && (
+              {video.expireDate && video.expireDate !== "なし" && (
                 <div>
                   <h3 className="text-gray-400 text-sm">視聴期限</h3>
                   <p className="text-white mt-1">{video.expireDate}</p>
@@ -942,7 +948,7 @@ const VideoModalList = ({ title, videos, onClose, onVideoClick, user, setHistory
                     <h3 className="text-white font-semibold text-sm truncate">{video.title}</h3>
                     <p className="text-gray-400 text-xs mt-1 truncate">{video.summary}</p>
                     {/* 追加: 視聴期限表示 */}
-                    {video.expireDate && (
+                    {video.expireDate && video.expireDate !== "なし" && (
                       <p className="text-gray-400 text-xs mt-1">
                         視聴期限: {video.expireDate}
                       </p>
@@ -1031,3 +1037,13 @@ const ADMIN_EMAILS = [
 
 // 管理者判定関数
 const isAdmin = user => ADMIN_EMAILS.includes(user?.email);
+
+// 日付整形関数
+function formatExpireDate(dateStr) {
+  if (!dateStr || dateStr === "なし") return "期限なし";
+  // ISO形式の場合
+  if (dateStr.includes("T")) {
+    return new Date(dateStr).toLocaleDateString("ja-JP");
+  }
+  return dateStr;
+}
