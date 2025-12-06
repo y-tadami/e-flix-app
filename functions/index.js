@@ -43,13 +43,30 @@ exports.saveLogsToCSV = functions.pubsub.schedule('every 10 minutes').onRun(asyn
   
   // ログ取得処理
   const snap = await db.collection("logs").get();
-  const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画ID"]];
+  // Firestoreのデータを配列化
+  const logArray = [];
   snap.forEach(doc => {
     const d = doc.data();
+    logArray.push(d);
+  });
+
+  // 日時で昇順ソート（最新が下）
+  logArray.sort((a, b) => {
+    const at = a.viewedAt instanceof admin.firestore.Timestamp ? a.viewedAt.toDate() : new Date(a.viewedAt);
+    const bt = b.viewedAt instanceof admin.firestore.Timestamp ? b.viewedAt.toDate() : new Date(b.viewedAt);
+    return at - bt;
+  });
+
+  const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画ID"]];
+  logArray.forEach(d => {
+    // 日本時間で日時を出力
+    let dateStr = "";
+    if (d.viewedAt) {
+      const dateObj = d.viewedAt instanceof admin.firestore.Timestamp ? d.viewedAt.toDate() : new Date(d.viewedAt);
+      dateStr = dateObj.toLocaleString("ja-JP", { timeZone: "Asia/Tokyo" });
+    }
     rows.push([
-      d.viewedAt instanceof admin.firestore.Timestamp
-        ? d.viewedAt.toDate().toLocaleString()
-        : (d.viewedAt ? new Date(d.viewedAt).toLocaleString() : ""),
+      dateStr,
       d.email || "",
       d.videoTitle || "",
       d.videoSummary || "",
