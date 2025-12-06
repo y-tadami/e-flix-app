@@ -1055,16 +1055,8 @@ const isAdmin = user => ADMIN_EMAILS.includes(user?.email);
 // 日付整形関数
 function formatExpireDate(dateStr) {
   if (!dateStr || dateStr === "なし") return "期限なし";
-  // ISO形式の場合
   if (dateStr.includes("T")) {
-    const dateObj = new Date(dateStr);
-    // 日本時間に変換
-    return dateObj.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" });
+    return new Date(dateStr).toLocaleDateString("ja-JP");
   }
   return dateStr;
 }
-
-// 視聴期限表示部分（カード・詳細エリア両方）
-<p className="text-gray-400 text-xs mt-1">
-  視聴期限: {formatExpireDate(video.expireDate)}
-</p>
