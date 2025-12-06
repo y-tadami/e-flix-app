@@ -43,7 +43,7 @@ def fetch_sheets_data():
                 "title": title,
                 "summary": row.get("summary", ""),
                 "category": row.get("category", ""),
-                "url": row.get("url", ""),
+                "expireDate": row.get("expireDate", ""),
                 "driveLink": driveLink,
                 "thumbnail": thumbnail,
                 "description": row.get("description", "")

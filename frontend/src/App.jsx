@@ -552,11 +552,7 @@ export default function App() {
           }
           
           const data = await response.json();
-          
-          if (data.error) {
-              throw new Error(data.error);
-          }
-          
+          console.log(data); // ←ここを追加
           setVideos(data);
           setIsLoading(false);
 
