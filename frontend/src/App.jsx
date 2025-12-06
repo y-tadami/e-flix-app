@@ -1060,3 +1060,8 @@ function formatExpireDate(dateStr) {
   }
   return dateStr;
 }
+
+// 視聴期限表示部分（カード・詳細エリア両方）
+<p className="text-gray-400 text-xs mt-1">
+  視聴期限: {formatExpireDate(video.expireDate)}
+</p>
