@@ -225,6 +225,12 @@ const VideoCard = ({ video, onClick, user }) => {
             </button>
           </div>
           <p className="text-gray-400 text-sm truncate">{video.summary}</p>
+          {/* 追加: 視聴期限表示 */}
+          {video.expireDate && video.expireDate !== "なし" && (
+            <p className="text-gray-400 text-xs mt-1">
+              視聴期限: {formatExpireDate(video.expireDate)}
+            </p>
+          )}
           {/* 詳細情報ボタン */}
           <button
             onClick={e => { e.stopPropagation(); setShowDetails(true); }}
