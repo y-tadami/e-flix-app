@@ -1056,7 +1056,8 @@ const isAdmin = user => ADMIN_EMAILS.includes(user?.email);
 function formatExpireDate(dateStr) {
   if (!dateStr || dateStr === "なし") return "期限なし";
   if (dateStr.includes("T")) {
-    return new Date(dateStr).toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" });
+    const dateObj = new Date(dateStr);
+    return dateObj.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" });
   }
   return dateStr;
 }
