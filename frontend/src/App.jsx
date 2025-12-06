@@ -319,7 +319,9 @@ const VideoCard = ({ video, onClick, user }) => {
               */}
               <div>
                 <h3 className="text-gray-400 text-sm">視聴期限</h3>
-                <p className="text-white mt-1">{video.expireDate || "期限なし"}</p>
+                <p className="text-white mt-1">
+                  {formatExpireDate(video.expireDate)}
+                </p>
               </div>
             </div>
           </div>
