@@ -141,14 +141,14 @@ const VideoModal = ({ video, onClose, user }) => {
         <div className="p-6 md:p-8 text-white">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-3xl font-bold text-red-600">{video.title}</h2>
-            {/* ハートアイコンボタン */}
+            {/* ハートアイコンボタン
             <button
               onClick={handleAddToMyList}
               className={`ml-4 p-2 rounded-full border border-red-600 bg-black/60 hover:bg-red-600 transition-colors duration-200 flex items-center justify-center ${isAdding ? 'opacity-50 pointer-events-none' : ''}`}
               title="マイリストに追加"
             >
               <Heart size={28} className="text-red-600" fill="none" />
-            </button>
+            </button> */}
           </div>
           <div className="flex items-center space-x-3 text-sm mb-4">
             <span className="text-gray-400">カテゴリ: {video.category}</span>
