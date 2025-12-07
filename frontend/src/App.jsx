@@ -99,7 +99,7 @@ const VideoModal = ({ video, onClose, user }) => {
     setIsAdding(true);
     await addToMyList(video, user);
     setIsAdding(false);
-    alert('マイリストに追加しました');
+    // alert('マイリストに追加しました');
   };
 
   if (!video) return null;
@@ -189,7 +189,7 @@ const VideoCard = ({ video, onClick, user }) => {
     setIsAdding(true);
     await addToMyList(video, user);
     setIsAdding(false);
-    alert('マイリストに追加しました');
+    // alert('マイリストに追加しました');
   };
 
   // クリックイベントの伝播を止める
