@@ -1034,7 +1034,6 @@ const downloadLogsAsCSV = async () => {
 };
 
 // Firestoreインスタンス: db
-
 const fetchLogs = async () => {
   const snap = await getDocs(collection(db, "logs"));
   const logs = [];
