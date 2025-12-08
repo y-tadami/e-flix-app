@@ -808,7 +808,6 @@ export default function App() {
       <button onClick={downloadLogsAsCSV} className="fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50">
         閲覧ログをダウンロード
       </button> */}
-
       <Toaster position="bottom-right" />
     </div>
   );
@@ -1058,7 +1057,7 @@ const isAdmin = user => ADMIN_EMAILS.includes(user?.email);
 
 // 日付整形関数
 function formatExpireDate(dateStr) {
-  if (!dateStr || dateStr === "なし") return "期限なし";
+  if (!dateStr || dateStr === "なし") return "なし";
   if (dateStr.includes("T")) {
     const dateObj = new Date(dateStr);
     return dateObj.toLocaleDateString("ja-JP", { timeZone: "Asia/Tokyo" });
