@@ -431,7 +431,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                 >
                   視聴履歴
                 </button>
-                {/* 管理者向けメニュー (例: 閲覧ログダウンロード) */}
+                {/* 管理者向けメニュー (例: 閲覧ログダウンロード)
                 {isAdmin(user) && (
                   <button
                     onClick={async () => { await downloadLogsAsCSV(); }}
@@ -439,7 +439,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                   >
                     閲覧ログをダウンロード
                   </button>
-                )}
+                )} */}
               </div>
           )}
         </div>
