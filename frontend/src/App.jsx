@@ -800,15 +800,6 @@ export default function App() {
           setHistory={setHistory}
         />
       )}
-
-      {/* イントロ画面
-      {showIntro && <IntroScreen onEnd={() => setShowIntro(false)} />} */}
-
-      {/* {/* 閲覧ログダウンロードボタン（テスト用）
-      <button onClick={downloadLogsAsCSV} className="fixed bottom-4 right-4 bg-red-600 text-white px-4 py-2 rounded shadow-lg z-50">
-        閲覧ログをダウンロード
-      </button> }
-      <Toaster position="bottom-right" /> */}
     </div>
   );
 }
