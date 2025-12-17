@@ -434,7 +434,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                 {/* 管理者向けメニュー (例: 閲覧ログダウンロード) */}
                 {isAdmin(user) && (
                   <button
-                    onClick={async () => { await downloadLogsAsCSV(); }}
+                    onClick={e => { e.preventDefault(); e.stopPropagation(); downloadLogsAsCSV(); }}
                     className="flex items-center w-full px-4 py-2 text-sm text-white hover:bg-gray-800 transition"
                   >
                     閲覧ログをダウンロード
