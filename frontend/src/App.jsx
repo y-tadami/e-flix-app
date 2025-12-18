@@ -434,7 +434,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                 {/* 管理者向けメニュー: 閲覧ログダウンロード */}
                 {isAdmin(user) && (
                   <button
-                    onClick={() => downloadLogsAsCSV()}
+                    onClick={e => { e.preventDefault(); e.stopPropagation(); downloadLogsAsCSV(); }}
                     className="flex items-center w-full px-4 py-2 text-sm text-white hover:bg-gray-800 transition"
                   >
                     閲覧ログをダウンロード
@@ -1024,24 +1024,9 @@ const downloadLogsAsCSV = async () => {
   a.href = url;
   a.download = fileName;
   document.body.appendChild(a);
-  // クリックイベントを合成してdispatch
-  const clickEvent = new MouseEvent('click', {
-    view: window,
-    bubbles: true,
-    cancelable: true
-  });
-  a.dispatchEvent(clickEvent);
-  // フォールバック: window.open
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 200);
-  // さらにフォールバック
-  setTimeout(() => {
-    if (!a.downloaded) {
-      window.open(url, '_blank');
-    }
-  }, 400);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 };
 
 // Firestoreインスタンス: db
