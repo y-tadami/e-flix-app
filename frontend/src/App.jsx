@@ -1098,18 +1098,3 @@ function formatExpireDate(dateStr) {
   }
   return dateStr;
 }
-
-// Firestoreセキュリティルール
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /logs/{docId} {
-      allow read: if request.auth != null && (
-        request.auth.token.email == "t.ibi@estyle-inc.jp" ||
-        request.auth.token.email == "y.tadami@estyle-inc.jp" ||
-        request.auth.token.email == "admin1@example.com"
-      );
-      allow write: if false; // 書き込みは不可
-    }
-    // ...他のルール...
-  }
-}
