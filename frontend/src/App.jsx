@@ -1020,10 +1020,15 @@ const downloadLogsAsCSV = async () => {
   const fileName = `view_logs_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.csv`;
 
   const a = document.createElement("a");
+  a.style.display = "none";
   a.href = url;
   a.download = fileName;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  setTimeout(() => {
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }, 100);
 };
 
 // Firestoreインスタンス: db
