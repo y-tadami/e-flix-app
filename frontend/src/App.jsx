@@ -995,33 +995,28 @@ const addViewLog = async (user, video) => {
 };
 
 // CSVダウンロード関数
-// const downloadLogsAsCSV = async () => {
-//   const snap = await getDocs(collection(db, "logs"));
-//   const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画URL"]];
-//   snap.forEach(doc => {
-//     const d = doc.data();
-//     rows.push([
-//       d.viewedAt?.seconds
-//         ? new Date(d.viewedAt.seconds * 1000).toLocaleString()
-//         : (d.viewedAt ? new Date(d.viewedAt).toLocaleString() : ""),
-//       d.email || "",
-//       d.videoTitle || "",
-//       d.videoSummary || "",
-//       d.videoId || ""
-//     ]);
-//   });
-//   const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
-//   const blob = new Blob([csv], { type: "text/csv" });
-//   const url = URL.createObjectURL(blob);
-
 const downloadLogsAsCSV = async () => {
   try {
-    console.log("downloadLogsAsCSV called");
     const snap = await getDocs(collection(db, "logs"));
-    console.log("logs count:", snap.size);
-    const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画URL"]];
+    // ログを配列として取得
+    const logs = [];
     snap.forEach(doc => {
-      const d = doc.data();
+      logs.push(doc.data());
+    });
+    // viewedAt昇順でソート
+    logs.sort((a, b) => {
+      const aTime = a.viewedAt?.seconds
+        ? a.viewedAt.seconds
+        : (a.viewedAt ? new Date(a.viewedAt).getTime() / 1000 : 0);
+      const bTime = b.viewedAt?.seconds
+        ? b.viewedAt.seconds
+        : (b.viewedAt ? new Date(b.viewedAt).getTime() / 1000 : 0);
+      return aTime - bTime;
+    });
+    // ヘッダー行
+    const rows = [["日時", "メールアドレス", "動画タイトル", "動画サマリー", "動画URL"]];
+    // ソート済みログをCSV行に変換
+    logs.forEach(d => {
       rows.push([
         d.viewedAt?.seconds
           ? new Date(d.viewedAt.seconds * 1000).toLocaleString()
@@ -1032,41 +1027,28 @@ const downloadLogsAsCSV = async () => {
         d.videoId || ""
       ]);
     });
-    console.log("rows:", rows);
     const csv = rows.map(r => r.map(v => `"${v}"`).join(",")).join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
+
+    // 日時付きファイル名
     const now = new Date();
     const pad = n => n.toString().padStart(2, '0');
     const fileName = `view_logs_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.csv`;
+
     const a = document.createElement("a");
     a.style.display = "none";
     a.href = url;
     a.download = fileName;
     document.body.appendChild(a);
-    console.log("a.click()");
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   } catch (e) {
     console.error("downloadLogsAsCSV error:", e);
     alert("ダウンロード処理でエラーが発生しました: " + e.message);
+    return;
   }
-
-
-  // 日時付きファイル名
-  const now = new Date();
-  const pad = n => n.toString().padStart(2, '0');
-  const fileName = `view_logs_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.csv`;
-
-  const a = document.createElement("a");
-  a.style.display = "none";
-  a.href = url;
-  a.download = fileName;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
 };
 
 // Firestoreインスタンス: db
