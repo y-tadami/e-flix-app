@@ -1052,7 +1052,7 @@ const downloadLogsAsCSV = async () => {
     console.error("downloadLogsAsCSV error:", e);
     alert("ダウンロード処理でエラーが発生しました: " + e.message);
   }
-};
+
 
   // 日時付きファイル名
   const now = new Date();
