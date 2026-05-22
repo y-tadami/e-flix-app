@@ -86,7 +86,7 @@ exports.saveLogsToCSV = functions.pubsub.topic('firebase-schedule-saveLogsToCSV'
   }
 
   // Google Cloud Storageにアップロード
-  const bucket = admin.storage().bucket('netflix-clone-course-39cf8.firebasestorage.app');
+  const bucket = admin.storage().bucket(process.env.STORAGE_BUCKET);
   await bucket.upload(tempFilePath, {destination: fileName});
 
   // 一時ファイル削除
@@ -98,8 +98,7 @@ exports.saveLogsToCSV = functions.pubsub.topic('firebase-schedule-saveLogsToCSV'
 async function uploadToDrive(fileName, filePath) {
   console.log('Google Driveアップロード開始:', fileName);
   
-  // 共有フォルダのID（あなたの指定したもの）
-  const folderId = '1muOnOiY14IYxZDpMVYSFVD-hf7qWY0xS';
+  const folderId = process.env.DRIVE_FOLDER_ID;
 
   const fileMetadata = {
     name: fileName,
