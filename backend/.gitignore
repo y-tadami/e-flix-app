@@ -1,5 +1,4 @@
-```
-# ...existing code...
 .env
-# ...existing code...
-```
+venv/
+__pycache__/
+*.pyc

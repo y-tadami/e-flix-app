@@ -582,7 +582,6 @@ export default function App() {
           }
           
           const data = await response.json();
-          console.log(data); // ←ここを追加
           setVideos(data);
           setIsLoading(false);
 
@@ -851,18 +850,6 @@ const addToHistory = async (video, user) => {
   });
 };
 
-const deleteAllHistory = async (user, onDeleted) => {
-  if (!user) return;
-  const ref = collection(db, "users", user.uid, "history");
-  const snap = await getDocs(ref);
-  const batch = [];
-  snap.forEach(docSnap => {
-    batch.push(deleteDoc(doc(db, "users", user.uid, "history", docSnap.id)));
-  });
-  await Promise.all(batch);
-  if (onDeleted) onDeleted();
-};
-
 /**
  * 動画リストモーダル (マイリスト・視聴履歴用)
  */
@@ -1059,16 +1046,6 @@ const downloadLogsAsCSV = async () => {
     alert("ダウンロード処理でエラーが発生しました: " + e.message);
     return;
   }
-};
-
-// Firestoreインスタンス: db
-const fetchLogs = async () => {
-  const snap = await getDocs(collection(db, "logs"));
-  const logs = [];
-  snap.forEach(doc => {
-    logs.push(doc.data());
-  });
-  return logs;
 };
 
 // 日付整形関数

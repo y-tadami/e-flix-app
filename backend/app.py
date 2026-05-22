@@ -73,5 +73,5 @@ def index():
 
 if __name__ == "__main__":
     print("Starting Flask server on http://127.0.0.1:5000")
-    # 開発モードで実行
-    app.run(debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "false").lower() == "true"
+    app.run(debug=debug_mode)

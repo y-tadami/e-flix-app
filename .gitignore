@@ -4,3 +4,4 @@ get-token.js
 .env
 netflix-clone-course-39cf8-firebase-adminsdk-fbsvc-2ce782480a.json
 google-cloud-sdk/
+backend/venv/
