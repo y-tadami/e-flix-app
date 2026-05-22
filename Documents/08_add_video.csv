@@ -1,0 +1,26 @@
+Step,作業内容,詳細手順,注意事項
+1,スプレッドシートに情報を記入,"「動画メタデータ」スプシの最終行の下に新しい行を追加。列: title / summary / category / driveLink / expireDate / thumbnail / description","カテゴリはLLM/ML/DS/データ基盤/開発/その他/視聴必須のいずれか。expireDateはYYYY-MM-DD形式 または なし"
+2,Google Driveにアップロード,"動画ファイル（.mp4推奨）をドラッグ&ドロップでアップロード。完了まで待つ。",
+3,共有設定を変更,"右クリック→「共有」→「リンクを知っている全員」に変更→権限は「閲覧者」→「リンクをコピー」","URLの例: https://drive.google.com/file/d/xxxxxxxxx/view?usp=sharing"
+4,DriveリンクをiFrame用に変換しスプシ更新,"コピーしたURLの末尾を /view?usp=sharing → /preview に書き換えてスプシのdriveLink列に貼り付け","変換後例: https://drive.google.com/file/d/1abc123XYZ/preview"
+5,アプリで確認,"e-flix-frontend.vercel.appをリロードして確認","チェック: 動画表示・カテゴリタブ・サムネイル・再生・視聴期限"
+,,,
+【列の説明】,,,
+列名,必須,説明,例
+title,必須,動画のタイトル,第5回：Transformerの仕組み
+summary,必須,一覧画面に表示される短い説明（1〜2文）,Attention機構の基礎から解説します
+category,必須,カテゴリ名（下記の選択肢から選ぶ）,LLM
+driveLink,必須,Step4で変換した/preview URL,https://drive.google.com/file/d/.../preview
+expireDate,必須,視聴期限（ない場合は「なし」）,2027-03-31 または なし
+thumbnail,任意,サムネイル画像URL（空欄でも自動生成）,
+description,任意,モーダル内の詳細説明（長文OK）,この回では...
+,,,
+【カテゴリ一覧】,,,
+入力値,対応タブ,,
+LLM,生成AI / LLM,,
+ML,機械学習,,
+DS,データ分析,,
+データ基盤,データ基盤,,
+開発,エンジニアリング,,
+その他,その他,,
+視聴必須,🔰 視聴必須,,
