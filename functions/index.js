@@ -1,30 +1,21 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
-const {Storage} = require('@google-cloud/storage');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { google } = require('googleapis');
-const { OAuth2 } = google.auth; // 【追加】OAuth2を取り出す
 
 admin.initializeApp();
 
-const CLIENT_ID = process.env.DRIVE_CLIENT_ID;
-const CLIENT_SECRET = process.env.DRIVE_CLIENT_SECRET;
-const REFRESH_TOKEN = process.env.DRIVE_REFRESH_TOKEN;
+const oauth2Client = new google.auth.OAuth2(
+  process.env.DRIVE_CLIENT_ID,
+  process.env.DRIVE_CLIENT_SECRET
+);
+oauth2Client.setCredentials({ refresh_token: process.env.DRIVE_REFRESH_TOKEN });
 
-
-// 【修正】OAuth2クライアントを作成して認証情報をセットする
-const oauth2Client = new OAuth2(CLIENT_ID, CLIENT_SECRET);
-oauth2Client.setCredentials({
-  refresh_token: REFRESH_TOKEN
-});
-
-// 【修正】作成したOAuth2クライアントをDriveに渡す
-const drive = google.drive({ 
-  version: 'v3', 
-  auth: oauth2Client 
-});
+function getDrive() {
+  return google.drive({ version: 'v3', auth: oauth2Client });
+}
 
 
 // 「0 9 1 * *」とCloud Schedulerのcron形式でも指定をする
@@ -78,16 +69,7 @@ exports.saveLogsToCSV = functions.pubsub.topic('firebase-schedule-saveLogsToCSV'
   const tempFilePath = path.join(os.tmpdir(), fileName);
   fs.writeFileSync(tempFilePath, csv);
 
-  try {
-    // Google Driveにアップロード
-    await uploadToDrive(fileName, tempFilePath);
-  } catch (error) {
-    console.error("Driveアップロードエラー:", error);
-  }
-
-  // Google Cloud Storageにアップロード
-  const bucket = admin.storage().bucket(process.env.STORAGE_BUCKET);
-  await bucket.upload(tempFilePath, {destination: fileName});
+  await uploadToDrive(fileName, tempFilePath);
 
   // 一時ファイル削除
   fs.unlinkSync(tempFilePath);
@@ -97,21 +79,13 @@ exports.saveLogsToCSV = functions.pubsub.topic('firebase-schedule-saveLogsToCSV'
 // ファイルアップロード関数
 async function uploadToDrive(fileName, filePath) {
   console.log('Google Driveアップロード開始:', fileName);
-  
+
+  const drive = getDrive();
   const folderId = process.env.DRIVE_FOLDER_ID;
 
-  const fileMetadata = {
-    name: fileName,
-    parents: [folderId] // このフォルダの中に保存
-  };
-  const media = {
-    mimeType: 'text/csv',
-    body: fs.createReadStream(filePath),
-  };
-
   const res = await drive.files.create({
-    resource: fileMetadata,
-    media: media,
+    resource: { name: fileName, parents: [folderId] },
+    media: { mimeType: 'text/csv', body: fs.createReadStream(filePath) },
     fields: 'id',
   });
   console.log('Google Driveアップロード成功 ID:', res.data.id);

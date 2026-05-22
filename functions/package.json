@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "22"
+  },
   "dependencies": {
     "@google-cloud/storage": "^7.18.0",
     "firebase-admin": "^12.7.0",
