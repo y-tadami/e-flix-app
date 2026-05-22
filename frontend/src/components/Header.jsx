@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ChevronDown, User, LogOut } from 'lucide-react';
+import { ChevronDown, User, LogOut } from 'lucide-react';
 import { downloadLogsAsCSV } from '../services/firestore';
 
 const categories = [
@@ -12,7 +12,7 @@ const categories = [
   { key: 'その他', label: 'その他' },
 ];
 
-const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleShowMyList, handleShowHistory, isAdminUser }) => {
+const Header = ({ onCategoryChange, user, handleLogout, handleShowMyList, handleShowHistory, isAdminUser }) => {
   const [currentCategory, setCurrentCategory] = useState('すべて');
   const [isCategoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [isUserMenuOpen, setUserMenuOpen] = useState(false);

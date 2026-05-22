@@ -22,7 +22,6 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [dataError, setDataError] = useState(null);
 
-  const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('すべて');
   const [selectedVideo, setSelectedVideo] = useState(null);
 
@@ -136,7 +135,6 @@ export default function App() {
     <div className="min-h-screen bg-black font-sans antialiased">
       <Toaster />
       <Header
-        setSearchTerm={setSearchTerm}
         onCategoryChange={setSelectedCategory}
         user={user}
         handleLogout={handleLogout}
@@ -180,7 +178,7 @@ export default function App() {
             全講義動画 ({selectedCategory} {filteredVideos.length}件)
           </h2>
           {filteredVideos.length === 0 && !isLoading ? (
-            <p className="text-gray-400 text-lg">「{searchTerm}」に一致する動画は見つかりませんでした。</p>
+            <p className="text-gray-400 text-lg">動画が見つかりませんでした。</p>
           ) : (
             <div className="grid gap-x-6 gap-y-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
               {filteredVideos.map((video, index) => (
