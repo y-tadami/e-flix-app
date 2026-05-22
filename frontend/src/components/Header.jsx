@@ -10,7 +10,7 @@ const categories = [
   { key: 'データ基盤', label: 'データ基盤' },
   { key: '開発',    label: 'エンジニアリング' },
   { key: 'その他',  label: 'その他' },
-  { key: 'はじめに', label: '🔰 はじめに' },
+  { key: '視聴必須', label: '🔰 視聴必須' },
 ];
 
 const Header = ({ onCategoryChange, user, handleLogout, handleShowMyList, handleShowHistory, isAdminUser }) => {
