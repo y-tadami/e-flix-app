@@ -336,7 +336,7 @@ const VideoCard = ({ video, onClick, user }) => {
 /**
  * E-FLIX風のヘッダーナビゲーション
  */
-const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleShowMyList, handleShowHistory }) => {
+const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleShowMyList, handleShowHistory, isAdminUser }) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [currentCategory, setCurrentCategory] = useState("すべて");
   const [isCategoryMenuOpen, setCategoryMenuOpen] = useState(false);
@@ -432,7 +432,7 @@ const Header = ({ setSearchTerm, onCategoryChange, user, handleLogout, handleSho
                   視聴履歴
                 </button>
                 {/* 管理者向けメニュー: 閲覧ログダウンロード */}
-                {isAdmin(user) && (
+                {isAdminUser && (
                   <button
                     onClick={e => { e.preventDefault(); e.stopPropagation(); downloadLogsAsCSV(); }}
                     className="flex items-center w-full px-4 py-2 text-sm text-white hover:bg-gray-800 transition"
@@ -550,6 +550,7 @@ export default function App() {
   const [myList, setMyList] = useState([]);
   const [history, setHistory] = useState([]);
   const [showIntro, setShowIntro] = useState(true);
+  const [isAdminUser, setIsAdminUser] = useState(false);
 
   // --- 認証状態のリスナー設定（常に実行） ---
   useEffect(() => {
@@ -560,6 +561,14 @@ export default function App() {
     });
     return () => unsubscribe();
   }, []);
+
+  // --- 管理者判定（Firestoreの admins コレクションで確認） ---
+  useEffect(() => {
+    if (!user) { setIsAdminUser(false); return; }
+    getDoc(doc(db, "admins", user.email)).then(snap => {
+      setIsAdminUser(snap.exists());
+    });
+  }, [user]);
 
   // --- データフェッチロジック (useCallback/useMemoを削除) ---
   const fetchVideos = async () => {
@@ -691,13 +700,14 @@ export default function App() {
   return (
     // Tailwindのダークテーマを適用するためにbg-blackを使用
     <div className="min-h-screen bg-black font-sans antialiased">
-      <Header 
-        setSearchTerm={setSearchTerm} 
+      <Header
+        setSearchTerm={setSearchTerm}
         onCategoryChange={setSelectedCategory}
         user={user}
         handleLogout={handleLogout}
         handleShowMyList={handleShowMyList}
         handleShowHistory={handleShowHistory}
+        isAdminUser={isAdminUser}
       />
 
       <main className="pt-20 md:pt-24 pb-8 px-4 md:px-12">
@@ -1060,16 +1070,6 @@ const fetchLogs = async () => {
   });
   return logs;
 };
-
-// 管理者メールアドレスのリスト
-const ADMIN_EMAILS = [
-  "admin1@example.com",
-  "t.ibi@estyle-inc.jp",
-  "y.tadami@estyle-inc.jp"
-];
-
-// 管理者判定関数
-const isAdmin = user => ADMIN_EMAILS.includes(user?.email);
 
 // 日付整形関数
 function formatExpireDate(dateStr) {

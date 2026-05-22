@@ -27,14 +27,11 @@ const drive = google.drive({
 });
 
 
-// '1 of month 00:00' で「毎月1日の09:00」を指定
-// .timeZone('Asia/Tokyo') を追加して、日本時間で作動させる
 // 「0 9 1 * *」とCloud Schedulerのcron形式でも指定をする
 // https://console.cloud.google.com/cloudscheduler?project=netflix-clone-course-39cf8
 
-exports.saveLogsToCSV = functions.pubsub.schedule('1 of month 09:00')
-  .timeZone('Asia/Tokyo')
-  .onRun(async (context) => {
+exports.saveLogsToCSV = functions.pubsub.topic('firebase-schedule-saveLogsToCSV')
+  .onPublish(async (message) => {
 
   console.log('saveLogsToCSV関数が実行されました');
   const db = admin.firestore();
