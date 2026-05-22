@@ -3,13 +3,14 @@ import { ChevronDown, User, LogOut } from 'lucide-react';
 import { downloadLogsAsCSV } from '../services/firestore';
 
 const categories = [
-  { key: 'すべて', label: 'すべて' },
-  { key: 'LLM',    label: 'LLM' },
-  { key: 'ML',     label: 'ML' },
-  { key: 'DS',     label: 'DS' },
+  { key: 'すべて',   label: 'すべて' },
+  { key: 'LLM',     label: '生成AI / LLM' },
+  { key: 'ML',      label: '機械学習' },
+  { key: 'DS',      label: 'データ分析' },
   { key: 'データ基盤', label: 'データ基盤' },
-  { key: '開発',   label: '開発' },
-  { key: 'その他', label: 'その他' },
+  { key: '開発',    label: 'エンジニアリング' },
+  { key: 'その他',  label: 'その他' },
+  { key: 'はじめに', label: '🔰 はじめに' },
 ];
 
 const Header = ({ onCategoryChange, user, handleLogout, handleShowMyList, handleShowHistory, isAdminUser }) => {
