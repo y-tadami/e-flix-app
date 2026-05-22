@@ -199,6 +199,7 @@ export default function App() {
       {showMyList && (
         <VideoModalList
           title="マイリスト"
+          type="mylist"
           videos={myList}
           onClose={() => setShowMyList(false)}
           user={user}
@@ -208,6 +209,7 @@ export default function App() {
       {showHistory && (
         <VideoModalList
           title="視聴履歴"
+          type="history"
           videos={history}
           onClose={() => setShowHistory(false)}
           user={user}

@@ -4,7 +4,7 @@ import { deleteSelectedItems } from '../services/firestore';
 import { thumbnailFor, formatExpireDate } from '../utils/helpers';
 import VideoModal from './VideoModal';
 
-const VideoModalList = ({ title, videos, onClose, user, setHistory, setMyList }) => {
+const VideoModalList = ({ title, type, videos, onClose, user, setHistory, setMyList }) => {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedIds, setSelectedIds] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
@@ -18,12 +18,11 @@ const VideoModalList = ({ title, videos, onClose, user, setHistory, setMyList })
 
   const handleDeleteSelected = async () => {
     if (!user || selectedIds.length === 0) return;
-    const target = title === '視聴履歴' ? 'history' : 'mylist';
-    await deleteSelectedItems(user, target, selectedIds);
-    if (title === '視聴履歴' && setHistory) {
+    await deleteSelectedItems(user, type, selectedIds);
+    if (type === 'history' && setHistory) {
       setHistory(prev => prev.filter(v => !selectedIds.includes(getVideoId(v))));
     }
-    if (title === 'マイリスト' && setMyList) {
+    if (type === 'mylist' && setMyList) {
       setMyList(prev => prev.filter(v => !selectedIds.includes(getVideoId(v))));
     }
     setSelectedIds([]);
@@ -55,7 +54,7 @@ const VideoModalList = ({ title, videos, onClose, user, setHistory, setMyList })
               onClick={handleDeleteSelected}
               className="ml-2 px-4 py-1 bg-red-700 hover:bg-red-800 text-white rounded font-bold"
             >
-              選択した{title === '視聴履歴' ? '履歴' : '動画'}を削除
+              選択した{type === 'history' ? '履歴' : '動画'}を削除
             </button>
           )}
         </div>
