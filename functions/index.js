@@ -7,14 +7,13 @@ const { google } = require('googleapis');
 
 admin.initializeApp();
 
-const oauth2Client = new google.auth.OAuth2(
-  process.env.DRIVE_CLIENT_ID,
-  process.env.DRIVE_CLIENT_SECRET
-);
-oauth2Client.setCredentials({ refresh_token: process.env.DRIVE_REFRESH_TOKEN });
+const driveAuth = new google.auth.GoogleAuth({
+  scopes: ['https://www.googleapis.com/auth/drive.file'],
+});
 
-function getDrive() {
-  return google.drive({ version: 'v3', auth: oauth2Client });
+async function getDrive() {
+  const client = await driveAuth.getClient();
+  return google.drive({ version: 'v3', auth: client });
 }
 
 
@@ -80,13 +79,14 @@ exports.saveLogsToCSV = functions.pubsub.topic('firebase-schedule-saveLogsToCSV'
 async function uploadToDrive(fileName, filePath) {
   console.log('Google Driveアップロード開始:', fileName);
 
-  const drive = getDrive();
+  const drive = await getDrive();
   const folderId = process.env.DRIVE_FOLDER_ID;
 
   const res = await drive.files.create({
     resource: { name: fileName, parents: [folderId] },
     media: { mimeType: 'text/csv', body: fs.createReadStream(filePath) },
     fields: 'id',
+    supportsAllDrives: true,
   });
   console.log('Google Driveアップロード成功 ID:', res.data.id);
 }
